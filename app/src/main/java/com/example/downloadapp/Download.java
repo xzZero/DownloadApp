@@ -100,4 +100,5 @@ public class Download extends AsyncTask<String, String, String> {
     private String stringSlicing(String url){
         return url.substring(url.lastIndexOf("/", url.length()));
     }
+
 }

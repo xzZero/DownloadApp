@@ -11,8 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
-    private Button button;
+    private Button button, button2;
     private EditText editText;
+    private Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,18 +23,33 @@ public class MainActivity extends AppCompatActivity {
             askPermissions();
         }
         button = (Button)findViewById(R.id.button);
+        button2 = findViewById(R.id.button2);
         editText = findViewById(R.id.txtInput);
+        intent = new Intent(getApplication(), DownloadService.class);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplication(), DownloadService.class);
-                intent.putExtra("URL", editText.getText().toString());
+
+                //intent.putExtra("URL", editText.getText().toString());
+                intent.putExtra("URL", "http://ipv4.download.thinkbroadband.com/512MB.zip");
                 startService(intent);
             }
         });
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (intent != null){
+                    stopService(intent);
+                }
+            }
+        });
+
+
     }
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     @TargetApi(23)
 

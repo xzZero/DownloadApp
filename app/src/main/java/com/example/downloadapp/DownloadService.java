@@ -3,6 +3,7 @@ package com.example.downloadapp;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
@@ -17,6 +18,7 @@ public class DownloadService extends Service {
     private Looper serviceLooper;
     private ServiceHandler serviceHandler;
     private Context mContext;
+    Download download;
 
     private final class ServiceHandler extends Handler{
         public ServiceHandler(Looper looper){
@@ -24,8 +26,9 @@ public class DownloadService extends Service {
         }
         @Override
         public void handleMessage(Message msg){
-            Download download = new Download(mContext);
-            download.execute(msg.obj.toString());
+                download = new Download(mContext);
+                download.execute(msg.obj.toString());
+
         }
     }
 
@@ -55,6 +58,8 @@ public class DownloadService extends Service {
         Message msg = serviceHandler.obtainMessage();
         msg.arg1 = startId;
         msg.obj = intent.getStringExtra("URL");
+
+
         serviceHandler.sendMessage(msg);
 
         // If we get killed, after returning from here, restart
@@ -69,6 +74,11 @@ public class DownloadService extends Service {
 
     @Override
     public void onDestroy() {
-        //Toast.makeText(this, "service done", Toast.LENGTH_SHORT).show();
+        if (download.getStatus() == AsyncTask.Status.RUNNING){
+            download.cancel(true);
+            Toast.makeText(this, "cancelled", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "service done", Toast.LENGTH_SHORT).show();
+        }
     }
 }
