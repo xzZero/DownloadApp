@@ -30,8 +30,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                //intent.putExtra("URL", editText.getText().toString());
-                intent.putExtra("URL", "http://ipv4.download.thinkbroadband.com/512MB.zip");
+                intent.putExtra("URL", editText.getText().toString());
+                //intent.putExtra("URL", "http://ipv4.download.thinkbroadband.com/512MB.zip");
                 startService(intent);
             }
         });
